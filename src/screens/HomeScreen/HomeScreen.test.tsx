@@ -86,7 +86,7 @@ describe('HomeScreen', () => {
   it('renders language switch options when no messages are present', async () => {
     const {getByTestId} = render(
       <NavigationContainer>
-        <HomeScreen route={{params: {generateImage: false}}} />
+        <HomeScreen />
       </NavigationContainer>,
     );
 
