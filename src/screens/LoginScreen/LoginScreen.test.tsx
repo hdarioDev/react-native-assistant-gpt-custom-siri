@@ -35,8 +35,6 @@ describe('LoginScreen', () => {
     const {getByText} = renderLoginScreen();
 
     fireEvent.press(getByText('Agenda una cita'));
-    expect(mockedNavigation).toHaveBeenCalledWith('home', {
-      generateImage: false,
-    });
+    expect(mockedNavigation).toHaveBeenCalledWith('home');
   });
 });

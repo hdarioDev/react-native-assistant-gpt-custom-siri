@@ -35,9 +35,10 @@ jest.mock('react-native-tts', () => ({
   removeEventListener: jest.fn(),
   setDefaultLanguage: jest.fn(),
   setDefaultRate: jest.fn(),
+  setDefaultVoice: jest.fn(),
 }));
 
-jest.mock('react-native-switch-selector', () => {
+jest.mock('react-native-config', () => {
   return {
     __esModule: true,
     default: jest.fn(),
