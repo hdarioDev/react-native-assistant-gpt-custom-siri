@@ -10,9 +10,8 @@ import {Alert, ScrollView} from 'react-native';
 import {AsyncStorageRepository} from '../infrastructure/AsyncStorageRepository';
 import {OpenAiChatRepository} from '../infrastructure/ChatRepository';
 import {StorageRepository} from '../domain/StorageInterface';
-import {ChatRepository} from '../domain/ChatInterface';
+import {ChatRepository, Message} from '../domain/ChatInterface';
 import {MAX_DAILY_QUESTIONS} from '../constants/config';
-import {Message} from '../constants/dummy';
 import {EnglishLevel, LanguageCode, Roles} from './TalkingInterface';
 
 export const useTalking = () => {
@@ -103,7 +102,7 @@ export const useTalking = () => {
         ...prevMessages,
         {role: Roles.USER, content: text.trim()},
       ];
-      fetchResponse(text, newMessages);
+      fetchResponse(text);
       return newMessages;
     });
 
@@ -149,23 +148,25 @@ export const useTalking = () => {
     }
   }, [selectedLevel]);
 
-  async function fetchResponse(text: string, messagesSend: Message[]) {
+  async function fetchResponse(text: string) {
     if (text.trim().length > 0) {
       setLoading(true);
       updateScrollView();
       try {
-        const res = await chatRepository.callApi(
-          messagesSend,
-          lenguageLevelRef.current,
-          selectedLevelRef.current,
-        );
+        const res = await chatRepository.fetchApi(text);
         setLoading(false);
-        setMessages(res);
+        setMessages(prevMessages => {
+          const newMessages = [
+            ...prevMessages,
+            {role: Roles.ASSISTANT, content: res.content},
+          ];
+          return newMessages;
+        });
         updateScrollView();
-        startTextToSpeach(res[res.length - 1]);
+        startTextToSpeach(res);
       } catch (err) {
         setLoading(false);
-        Alert.alert('Error', err.message);
+        Alert.alert('Error');
       }
     } else {
       Alert.alert('Error al grabar audio');

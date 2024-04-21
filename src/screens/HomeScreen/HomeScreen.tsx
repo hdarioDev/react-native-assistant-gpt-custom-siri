@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, ImageBackground, StyleSheet} from 'react-native';
 import {BlurView} from '@react-native-community/blur';
-import Config from 'react-native-config';
 
 import {FooterActions, HeaderNav, Messages} from '../../components';
 import {useTalking} from '../../hooks/useTalking';
@@ -20,9 +19,6 @@ const HomeScreen = () => {
     setRecording,
     startTextToSpeach,
   } = useTalking();
-  console.log(Config.API_KEY); // your_api_key
-  console.log(Config.CHAT_GPT_URL); // your_chat_gpt_url
-  console.log(Config.DALLE_URL);
 
   return (
     <ImageBackground
