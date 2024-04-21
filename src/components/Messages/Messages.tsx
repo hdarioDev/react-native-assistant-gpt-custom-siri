@@ -1,11 +1,11 @@
 import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {Message} from '../../constants/dummy';
+import {Message} from '../../domain/ChatInterface';
 
 interface Props {
   messages: Message[];
   ScrollViewRef?: any;
-  startTextToSpeech: (message: Message) => void;
+  startTextToSpeech: (message: string) => void;
 }
 
 const Messages = ({messages, ScrollViewRef, startTextToSpeech}: Props) => {
@@ -38,7 +38,7 @@ const Messages = ({messages, ScrollViewRef, startTextToSpeech}: Props) => {
                     className="bg-emerald-100 rounded-2xl p-3 w-3/4 rounded-tl-none">
                     <TouchableOpacity
                       className="absolute top-0 right-0 -mr-2 -mt-2"
-                      onPress={() => startTextToSpeech(message)}>
+                      onPress={() => startTextToSpeech(message.content)}>
                       <Image
                         className="w-7 h-7 rounded-full"
                         source={require('../../../assets/images/speak.png')}

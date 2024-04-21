@@ -126,10 +126,10 @@ export const useTalking = () => {
     setLenguage(LanguageCode.ES);
   };
 
-  const startTextToSpeach = (message: Message) => {
+  const startTextToSpeach = (message: string) => {
     Tts.stop();
 
-    Tts.speak(message.content);
+    Tts.speak(message);
     setSpeaking(true);
   };
 
@@ -154,14 +154,16 @@ export const useTalking = () => {
       updateScrollView();
       try {
         const res = await chatRepository.fetchApi(text);
+
         setLoading(false);
         setMessages(prevMessages => {
           const newMessages = [
             ...prevMessages,
-            {role: Roles.ASSISTANT, content: res.content},
+            {role: Roles.ASSISTANT, content: res},
           ];
           return newMessages;
         });
+
         updateScrollView();
         startTextToSpeach(res);
       } catch (err) {
