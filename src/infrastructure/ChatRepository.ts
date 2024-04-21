@@ -1,49 +1,32 @@
-import {postData} from '../api/OpenAiApi';
-import {ChatRepository, Message} from '../domain/ChatInterface';
-import {Roles} from '../hooks/TalkingInterface';
+import {ChatRepository} from '../domain/ChatInterface';
 import Config from 'react-native-config';
 
 export class OpenAiChatRepository implements ChatRepository {
-  private readonly chatgptUrl: string;
+  private readonly assistantApi: string;
 
   constructor() {
-    this.chatgptUrl = Config.CHAT_GPT_URL;
+    this.assistantApi = Config.API_URL ?? '';
   }
 
-  async callApi(
-    messages: Message[],
-    lenguage: string,
-    selectedLevel: string,
-  ): Promise<Message[]> {
-    // console.log('---> messages.length  ', messages.length);
-    // console.log('--->  lenguage ', lenguage);
-    console.log('----> this.chatgptUrl  ', this.chatgptUrl);
-
-    let messageModified: Message[] = [];
-
-    const isEnglishLevel = selectedLevel !== 'native' && lenguage === 'en-US';
-
-    if (isEnglishLevel) {
-      const firstUserMessage = messages[0].content;
-      const modifiedFirstUserMessage = `Simulate having a conversation in English level ${selectedLevel}, and follow the conversation. ${firstUserMessage}`;
-
-      messageModified = [
-        {role: Roles.USER, content: modifiedFirstUserMessage},
-        ...messages.slice(1),
-      ];
-    }
+  async fetchApi(message: string): Promise<string> {
+    const endpointChat = `${this.assistantApi}/chat`;
 
     try {
-      const response = await postData(this.chatgptUrl, {
-        model: 'gpt-3.5-turbo',
-        messages: isEnglishLevel ? messageModified : messages,
+      const response = await fetch(endpointChat, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+        }),
       });
-      const answer = response?.choices[0]?.message?.content;
-      const newMessages = [
-        ...messages,
-        {role: Roles.ASSISTANT, content: answer.trim()},
-      ];
-      return Promise.resolve(newMessages);
+      const answer = await response.json();
+      // const newMessages = [
+      //   ...messages,
+      //   {role: Roles.ASSISTANT, content: answer.trim()},
+      // ];
+      return Promise.resolve(answer.response);
     } catch (error) {
       console.error('Error calling Chat API:', error);
       return Promise.reject(error);
