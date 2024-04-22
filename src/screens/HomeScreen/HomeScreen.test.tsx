@@ -73,15 +73,6 @@ jest.mock('../../infrastructure/ChatRepository', () => {
   };
 });
 
-jest.mock('../../infrastructure/DalleRepository', () => {
-  return {
-    __esModule: true,
-    OpenAiDalleRepository: jest.fn(() => ({
-      callApi: jest.fn().mockResolvedValue('fakeImageUrl'),
-    })),
-  };
-});
-
 describe('HomeScreen', () => {
   it('renders language switch options when no messages are present', async () => {
     const {getByTestId} = render(
