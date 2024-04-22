@@ -35,7 +35,7 @@ const Messages = ({messages, ScrollViewRef, startTextToSpeech}: Props) => {
                 return (
                   <View
                     key={index}
-                    className="bg-emerald-100 rounded-2xl p-3 w-3/4 rounded-tl-none">
+                    className="bg-emerald-200 rounded-2xl p-3 w-3/4 rounded-tl-none">
                     <TouchableOpacity
                       className="absolute top-0 right-0 -mr-2 -mt-2"
                       onPress={() => startTextToSpeech(message.content)}>

@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Modal,
-  Pressable,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Modal, Pressable} from 'react-native';
 import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
 
@@ -49,7 +42,10 @@ const FooterActions = ({
           </Text>
         </TouchableOpacity>
       ) : loading ? (
-        <ActivityIndicator size="large" color="#e2e2e2" />
+        <FastImage
+          className="rounded-full h-20 w-20"
+          source={require('../../../assets/images/fetch.gif')}
+        />
       ) : recording ? (
         <TouchableOpacity className="space-y-2" onPress={stopRecording}>
           <FastImage
